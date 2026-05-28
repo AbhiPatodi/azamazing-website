@@ -1,0 +1,18 @@
+name = "azamazing-contact-worker"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+[env.development]
+vars = { ENVIRONMENT = "development" }
+
+[[env.production.routes]]
+pattern = "azamazinggroup.com/api/contact"
+zone_name = "azamazinggroup.com"
+
+[[env.production.routes]]
+pattern = "www.azamazinggroup.com/api/contact"
+zone_name = "azamazinggroup.com"

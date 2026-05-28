@@ -95,16 +95,76 @@
     });
   });
 
-  /* ── Contact form ── */
+  /* ── Contact form (Cloudflare Worker) ── */
   const form    = document.getElementById('contact-form');
   const success = document.getElementById('form-success');
   if (form) {
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
       const btn = form.querySelector('.form-btn');
       btn.disabled = true;
       btn.textContent = 'Sending…';
-      // Allow form to submit to FormSubmit.co
-      // Form will redirect after successful submission
+
+      try {
+        // Collect form data
+        const formData = new FormData(form);
+        const fname = formData.get('fname');
+        const lname = formData.get('lname');
+        const email = formData.get('email');
+        const subject = formData.get('subject');
+        const message = formData.get('message');
+        const company = formData.get('company') || '';
+        const market = formData.get('market') || '';
+        const enquiry_type = formData.get('enquiry_type') || '';
+
+        // Construct message with all form data
+        const fullMessage = `
+Name: ${fname} ${lname}
+Company: ${company || '(Not provided)'}
+Market: ${market || '(Not specified)'}
+Enquiry Type: ${enquiry_type || '(Not specified)'}
+Reply-to: ${email}
+
+Message:
+${message}
+        `.trim();
+
+        // Send to Cloudflare Worker
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: `${fname} ${lname}`,
+            email: email,
+            subject: subject,
+            message: fullMessage
+          })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Failed to send email');
+        }
+
+        // Show success message
+        setTimeout(() => {
+          form.style.display = 'none';
+          if (success) success.style.display = 'block';
+        }, 300);
+
+      } catch (error) {
+        console.error('Form submission error:', error);
+        btn.disabled = false;
+        btn.textContent = 'Failed - Try Again';
+        alert('Failed to send message. Please try again or contact us directly.');
+        setTimeout(() => {
+          btn.textContent = 'Send Message\n→';
+        }, 2000);
+      }
     });
   }
 

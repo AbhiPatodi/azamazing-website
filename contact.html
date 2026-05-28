@@ -156,20 +156,15 @@
         <div class="form-title">Send Us a Message</div>
         <p class="form-sub">We typically respond within 1–2 business days.</p>
 
-        <form id="contact-form" action="https://formsubmit.co/shreyansh@azamazinggroup.com" method="POST" aria-label="Contact form">
-          <!-- FormSubmit.co configuration -->
-          <input type="hidden" name="_next" value="https://www.azamazinggroup.com/contact.html" />
-          <input type="hidden" name="_subject" value="New Contact Form Submission from Azamazing Website" />
-          <input type="hidden" name="_captcha" value="false" />
-
+        <form id="contact-form" aria-label="Contact form">
           <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="fname">First Name <span class="req">*</span></label>
-              <input class="form-input" type="text" id="fname" name="first_name" placeholder="John" required autocomplete="given-name" />
+              <input class="form-input" type="text" id="fname" name="fname" placeholder="John" required autocomplete="given-name" />
             </div>
             <div class="form-group">
               <label class="form-label" for="lname">Last Name <span class="req">*</span></label>
-              <input class="form-input" type="text" id="lname" name="last_name" placeholder="Smith" required autocomplete="family-name" />
+              <input class="form-input" type="text" id="lname" name="lname" placeholder="Smith" required autocomplete="family-name" />
             </div>
           </div>
           <div class="form-group">
@@ -199,6 +194,10 @@
               <option value="partnership">Partnership Enquiry</option>
               <option value="general">General Enquiry</option>
             </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="subject">Subject <span class="req">*</span></label>
+            <input class="form-input" type="text" id="subject" name="subject" placeholder="What is your enquiry about?" required />
           </div>
           <div class="form-group">
             <label class="form-label" for="message">Message <span class="req">*</span></label>
