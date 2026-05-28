@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 72" fill="none">
+
+  <!-- Orange upward arrow above the 'z' in azamazing -->
+  <g transform="translate(60, 0)">
+    <path d="M12 0 L24 16 L17 16 L17 28 L7 28 L7 16 L0 16 Z" fill="#E8562A"/>
+  </g>
+
+  <!-- "azamazing" bold wordmark -->
+  <text x="8" y="44" font-family="'Nunito', 'Inter', 'Arial Rounded MT Bold', Arial, sans-serif" font-weight="800" font-size="36" letter-spacing="-1" fill="#FFFFFF">azamazing</text>
+
+  <!-- registered mark -->
+  <text x="244" y="28" font-family="Arial, sans-serif" font-weight="400" font-size="14" fill="#FFFFFF">®</text>
+
+  <!-- "group" subtitle, lighter weight -->
+  <text x="54" y="65" font-family="'Nunito', 'Inter', Arial, sans-serif" font-weight="400" font-size="16" letter-spacing="0.5" fill="#CCCCCC">group</text>
+
+  <!-- Cyan lightning-swoosh to right of "group" -->
+  <g transform="translate(108, 53)">
+    <path d="M0 8 L14 0 L10 7 L22 5 L6 14 L10 8 Z" fill="#00C8E8"/>
+  </g>
+
+</svg>

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "azamazing-website",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "4010", "."],
+      "port": 4010
+    }
+  ]
+}
