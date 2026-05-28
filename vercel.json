@@ -1,0 +1,26 @@
+{
+  "name": "azamazing-website",
+  "version": 2,
+  "buildCommand": null,
+  "framework": null,
+  "env": {},
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "trailingSlash": false,
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/api/healthz",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "max-age=0, no-cache, no-store, must-revalidate"
+        }
+      ]
+    }
+  ]
+}
