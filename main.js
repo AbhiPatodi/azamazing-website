@@ -100,14 +100,11 @@
   const success = document.getElementById('form-success');
   if (form) {
     form.addEventListener('submit', e => {
-      e.preventDefault();
       const btn = form.querySelector('.form-btn');
       btn.disabled = true;
       btn.textContent = 'Sending…';
-      setTimeout(() => {
-        form.style.display  = 'none';
-        if (success) success.style.display = 'block';
-      }, 1100);
+      // Allow form to submit to FormSubmit.co
+      // Form will redirect after successful submission
     });
   }
 

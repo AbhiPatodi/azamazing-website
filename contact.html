@@ -156,7 +156,12 @@
         <div class="form-title">Send Us a Message</div>
         <p class="form-sub">We typically respond within 1–2 business days.</p>
 
-        <form id="contact-form" action="mailto:shreyansh@azamazinggroup.com" method="post" enctype="text/plain" aria-label="Contact form">
+        <form id="contact-form" action="https://formsubmit.co/shreyansh@azamazinggroup.com" method="POST" aria-label="Contact form">
+          <!-- FormSubmit.co configuration -->
+          <input type="hidden" name="_next" value="https://www.azamazinggroup.com/contact.html" />
+          <input type="hidden" name="_subject" value="New Contact Form Submission from Azamazing Website" />
+          <input type="hidden" name="_captcha" value="false" />
+
           <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="fname">First Name <span class="req">*</span></label>
