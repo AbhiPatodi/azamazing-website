@@ -63,45 +63,52 @@ router.post('/api/contact', async (request: Request, env: any) => {
       );
     }
 
-    // Get Resend API key from environment
-    const resendApiKey = env.RESEND_API_KEY;
-    if (!resendApiKey) {
-      console.error('RESEND_API_KEY not set in environment');
-      return new Response(
-        JSON.stringify({ error: 'Email service not configured' }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      );
-    }
-
-    // Send email via Resend
-    const emailResponse = await fetch('https://api.resend.com/emails', {
+    // Send email via Mailchannels (Cloudflare's free email service)
+    const emailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${resendApiKey}`,
       },
       body: JSON.stringify({
-        from: 'noreply@azamazinggroup.com',
-        to: 'shreyansh@azamazinggroup.com',
-        subject: `New Contact Form: ${formData.subject || 'No subject'}`,
-        html: `
-          <h2>New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${escapeHtml(formData.name)}</p>
-          <p><strong>Email:</strong> ${escapeHtml(formData.email)}</p>
-          <p><strong>Subject:</strong> ${escapeHtml(formData.subject)}</p>
-          <p><strong>Message:</strong></p>
-          <p>${escapeHtml(formData.message).replace(/\n/g, '<br>')}</p>
-        `,
-        reply_to: formData.email,
+        personalizations: [
+          {
+            to: [
+              {
+                email: 'shreyansh@azamazinggroup.com',
+                name: 'Azamazing Contact Form',
+              },
+            ],
+            reply_to: {
+              email: formData.email,
+              name: formData.name,
+            },
+          },
+        ],
+        from: {
+          email: `noreply@azamazinggroup.com`,
+          name: 'Azamazing Group',
+        },
+        subject: formData.subject || 'New Contact Form Submission',
+        content: [
+          {
+            type: 'text/html',
+            value: `
+              <h2>New Contact Form Submission</h2>
+              <p><strong>Name:</strong> ${escapeHtml(formData.name)}</p>
+              <p><strong>Email:</strong> ${escapeHtml(formData.email)}</p>
+              <p><strong>Subject:</strong> ${escapeHtml(formData.subject)}</p>
+              <hr />
+              <h3>Message:</h3>
+              <p>${escapeHtml(formData.message).replace(/\n/g, '<br>')}</p>
+            `,
+          },
+        ],
       }),
     });
 
     if (!emailResponse.ok) {
       const error = await emailResponse.text();
-      console.error('Resend API error:', error);
+      console.error('Mailchannels API error:', error, emailResponse.status);
       return new Response(
         JSON.stringify({ error: 'Failed to send email' }),
         {
