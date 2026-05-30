@@ -1,13 +1,13 @@
 name = "azamazing-contact-worker"
 main = "src/index.ts"
-compatibility_date = "2024-01-01"
+compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
 [env.production]
-vars = { ENVIRONMENT = "production" }
+vars = { ENVIRONMENT = "production", GMAIL_USER = "azamazingltd@gmail.com" }
 
 [env.development]
-vars = { ENVIRONMENT = "development" }
+vars = { ENVIRONMENT = "development", GMAIL_USER = "azamazingltd@gmail.com" }
 
 [[env.production.routes]]
 pattern = "azamazinggroup.com/api/contact"

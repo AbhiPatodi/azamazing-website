@@ -14,6 +14,7 @@
     "wrangler": "^3.45.0"
   },
   "dependencies": {
-    "itty-router": "^4.0.0"
+    "itty-router": "^4.0.0",
+    "nodemailer": "^6.9.7"
   }
 }

@@ -1,4 +1,5 @@
 import { Router } from 'itty-router';
+import nodemailer from 'nodemailer';
 
 const router = Router();
 
@@ -63,52 +64,35 @@ router.post('/api/contact', async (request: Request, env: any) => {
       );
     }
 
-    // Send email via Mailchannels (Cloudflare's free email service)
-    const emailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    // Send email via Google SMTP
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: env.GMAIL_USER || 'azamazingltd@gmail.com',
+        pass: env.GMAIL_APP_PASSWORD,
       },
-      body: JSON.stringify({
-        personalizations: [
-          {
-            to: [
-              {
-                email: 'shreyansh@azamazinggroup.com',
-                name: 'Azamazing Contact Form',
-              },
-            ],
-            reply_to: {
-              email: formData.email,
-              name: formData.name,
-            },
-          },
-        ],
-        from: {
-          email: `noreply@azamazinggroup.com`,
-          name: 'Azamazing Group',
-        },
-        subject: formData.subject || 'New Contact Form Submission',
-        content: [
-          {
-            type: 'text/html',
-            value: `
-              <h2>New Contact Form Submission</h2>
-              <p><strong>Name:</strong> ${escapeHtml(formData.name)}</p>
-              <p><strong>Email:</strong> ${escapeHtml(formData.email)}</p>
-              <p><strong>Subject:</strong> ${escapeHtml(formData.subject)}</p>
-              <hr />
-              <h3>Message:</h3>
-              <p>${escapeHtml(formData.message).replace(/\n/g, '<br>')}</p>
-            `,
-          },
-        ],
-      }),
     });
 
-    if (!emailResponse.ok) {
-      const error = await emailResponse.text();
-      console.error('Mailchannels API error:', error, emailResponse.status);
+    try {
+      await transporter.sendMail({
+        from: `"Azamazing Group" <${env.GMAIL_USER || 'azamazingltd@gmail.com'}>`,
+        to: 'shreyansh@azamazinggroup.com',
+        replyTo: formData.email,
+        subject: formData.subject || 'New Contact Form Submission',
+        html: `
+          <h2>New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${escapeHtml(formData.name)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(formData.email)}</p>
+          <p><strong>Subject:</strong> ${escapeHtml(formData.subject)}</p>
+          <hr />
+          <h3>Message:</h3>
+          <p>${escapeHtml(formData.message).replace(/\n/g, '<br>')}</p>
+        `,
+      });
+    } catch (emailError) {
+      console.error('Gmail SMTP error:', emailError);
       return new Response(
         JSON.stringify({ error: 'Failed to send email' }),
         {
@@ -157,4 +141,6 @@ function escapeHtml(text: string): string {
 // 404 handler
 router.all('*', () => new Response('Not Found', { status: 404 }));
 
-export default router.handle;
+export default {
+  fetch: router.handle,
+};
